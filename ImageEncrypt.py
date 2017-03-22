@@ -92,3 +92,23 @@ im_out = 'Test.jpg'
 
 test_jpg_to_mp3_hide_and_back(im_file, mp3_file, mp3_out, im_out)
 
+"""
+pass
+"""
+
+"""
+test 2 - a different jpg and mp3 hide and find
+         from resulting file
+"""
+
+test_jpg_to_mp3_hide_and_back('second.jpg', '03.Tripping Out.mp3', 'test.mp3', 'test.jpg')
+
+"""
+fail
+
+ - test.mp3 created
+ - test.jpg created but not recognised as a jpg
+"""
+
+
+  
