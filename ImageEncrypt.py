@@ -46,45 +46,27 @@ def imageFind(mp3_file, output_file):
     return
 
 
-"""
-scratchpad
-to do:
-     Test if this will work with wav files
-     and rename mp3_bytes to audio_bytes if it does
-     
-     Test if this will work with video files
-     and rename mp3_bytes/audio_bytes to media 
-     bytes if it does
-     
-     write logical tests to ensure the length of
-     the image_bytes is less than the mp3_bytes
-     
-     encode the filetype as bytes and insert
-     into the audio file and append filetpye
-     to output filename
-     
-     look at embedding file over a many different
-     ranges
-     
-     look at using an encryption of the 
-     image_bytes before inserting into the 
-     mp3_bytes
-     
-"""            
  
-"""
-tests:
-"""
+ 
+#=============================================
+
+## Testing
+
+#==============================================
+
+# test 1 - jpg and mp3 hide and find from resulting file
 
 def test_jpg_to_mp3_hide_and_back(im_file, mp3_file, mp3_out, im_out):
     imageHide(im_file, mp3_file, mp3_out)
     imageFind(mp3_out, im_out)
     return
 
-"""
-test 1 - jpg and mp3 hide and find from resulting
-            file
-"""
+            
+# Notes:
+    # There is an audible period of silence and
+    # missing "words" in the output file, this
+    # may be corrected by (5) in the to-do list
+
 im_file = '/home/steve/Pictures/20160616_163313.jpg'
 mp3_file = 'The Divine Comedy - To The Rescue..mp3'
 mp3_out = 'Test.mp3'
@@ -92,23 +74,41 @@ im_out = 'Test.jpg'
 
 test_jpg_to_mp3_hide_and_back(im_file, mp3_file, mp3_out, im_out)
 
-"""
-pass
-"""
+test_jpg_to_mp3_hide_and_back('third.jpg', 'third.mp3', 'test.mp3', 'test.jpg')
 
-"""
-test 2 - a different jpg and mp3 hide and find
-         from resulting file
-"""
-
-test_jpg_to_mp3_hide_and_back('second.jpg', '03.Tripping Out.mp3', 'test.mp3', 'test.jpg')
-
-"""
-fail
-
- - test.mp3 created
- - test.jpg created but not recognised as a jpg
-"""
-
-
+"""passes"""
   
+
+
+#===============================================
+# scratchpad
+# to do:
+#     1: Test if this will work with wav files
+#     and rename mp3_bytes to audio_bytes if it does
+
+def test_jpg_to_wav_hide_and_back(im_file, wav_file, wav_out, im_out):
+    imageHide(im_file, wav_file, wav_out)
+    imageFind(wav_out, im_out)
+    return
+
+test_jpg_to_wav_hide_and_back('test.jpg', 'test.wav', 'out.jpg', 'out.wav')
+ 
+#     2: Test if this will work with video files
+#     and rename mp3_bytes/audio_bytes to media 
+#     bytes if it does
+     
+#     3: write logical tests to ensure the length 
+#     of the image_bytes is less than the mp3_bytes
+     
+#     4: encode the filetype as bytes and insert
+#     into the audio file and append filetpye
+#     to output filename
+     
+#     5: look at embedding file over a many 
+#     different ranges
+     
+#     look at using an encryption of the 
+#     image_bytes before inserting into the 
+#     mp3_bytes
+     
+#===============================================           
