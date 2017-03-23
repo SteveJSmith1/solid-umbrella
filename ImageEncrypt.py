@@ -91,12 +91,95 @@ def test_jpg_to_wav_hide_and_back(im_file, wav_file, wav_out, im_out):
     imageFind(wav_out, im_out)
     return
 
-test_jpg_to_wav_hide_and_back('test.jpg', 'test.wav', 'out.jpg', 'out.wav')
+test_jpg_to_wav_hide_and_back('test.jpg', 'test.wav', 'out.wav', 'out.jpg')
+
+"""
+passes, puts "encoded noise" into the wav
+"""
+
  
 #     2: Test if this will work with video files
 #     and rename mp3_bytes/audio_bytes to media 
 #     bytes if it does
+
+def test_jpg_to_video_hide_and_back
+test_jpg_to_video_hide_and_back('test.jpg', 'test.mp4', 'out.mp4', 'out.jpg')  
+
+"""
+passes
+"""
+
+#     2a: Test if this encodes text into audio
+
      
+def test_txt_audio_and_back(in_file, enc_file, out_enc, out_file):
+    imageHide(in_file, enc_file, out_enc)
+    imageFind(out_enc, out_file)
+    return
+
+test_txt_audio_and_back('test.txt', 'test.mp3', 'out.mp3', 'out.txt')
+"""
+passes
+"""
+
+#     2b: Test if this encodes any file 
+#       : (i.e. pdf, doc)
+
+def test_any_audio_and_back(in_file, enc_file, out_enc, out_file):
+    imageHide(in_file, enc_file, out_enc)
+    imageFind(out_enc, out_file)
+    return
+
+# test on doc to audio
+test_any_audio_and_back('test.doc', 'test.mp3', 'out.mp3', 'out.doc')
+
+"""
+pass
+"""
+
+# test on pdf to audio
+
+test_any_audio_and_back('test.pdf', 'test.mp3', 'out.mp3', 'out.pdf')
+
+"""
+fails
+
+# Breaks both output audio and output pdf
+# are the bytes encoded differently for a pdf?
+# pdf was ~= 1/2 the size of the audio file
+"""
+
+def test_any_video_and_back(in_file, enc_file, out_enc, out_file):
+    imageHide(in_file, enc_file, out_enc)
+    imageFind(out_enc, out_file)
+    return
+
+# test on .doc to video
+test_any_video_and_back('test.doc', 'test.mp4', 'out.mp4', 'out.doc')
+"""
+pass
+"""
+
+# test on pdf to video
+test_any_video_and_back('test.pdf', 'test.mp4', 'out.mp4', 'out.pdf')
+"""
+pass
+
+large pause then artefacts, but it was large pdf
+"""
+
+# test on mp3 to video
+test_any_video_and_back('test.mp3', 'test.mp4', 'out.mp4', 'out.mp3')
+"""
+pass
+
+large pause then artefacts, mp3 approx 0.1*mp4
+"""
+
+
+#     2c: try and break it by encoding a video
+#         into an audio file
+
 #     3: write logical tests to ensure the length 
 #     of the image_bytes is less than the mp3_bytes
      
@@ -107,8 +190,11 @@ test_jpg_to_wav_hide_and_back('test.jpg', 'test.wav', 'out.jpg', 'out.wav')
 #     5: look at embedding file over a many 
 #     different ranges
      
-#     look at using an encryption of the 
+#     6: look at using an encryption of the 
 #     image_bytes before inserting into the 
 #     mp3_bytes
+
+#     7: Investigate why pdfs fail and 
+#        find an avenue to support them
      
 #===============================================           
