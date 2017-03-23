@@ -69,7 +69,7 @@ def fileHide(file_to_enc, f_to_enc_in, filebytes=False):
     if filebytes==True:
         return file_to_enc_b, out_file_name
     else:
-        return
+        return out_file_name
 
 
 def fileFind(enc_file, filebytes=False):
@@ -94,7 +94,7 @@ def fileFind(enc_file, filebytes=False):
     if filebytes==True:
         return out_file_bytes
     else:
-        return
+        return filename
 
 #===============================================
 
@@ -129,7 +129,7 @@ def decodeBytes(enc_bytes):
     # extracting encoded filename
     name_array = enc_bytes[2000:2350]
     # converting bytes to string of filename
-    filename = bytesToFilename(name_array)
+    filename = 'F-' + bytesToFilename(name_array)
     # extracting encoded out_file bytes
     halfway = int(len(enc_bytes)/2)
     
@@ -209,11 +209,80 @@ def testFunction(in_file, enc_file):
     print('Files are equal ', in_bytes==out_bytes)
     return
 
+#=========================================
+
+# User interface
+
+
+def welcome():
+    print('-'*40)
+    print('Welcome to pyEncrypt')
+    print('-'*40)
+    print('Do you wish to [h]ide or [f]ind a file? ')
+    choice = str(input('> '))
+    if choice == 'h':
+        print("Enter filename to hide")
+        file_to_enc=str(input("> "))
+        print("Enter filename to hide the file in")
+        f_to_enc_in = str(input("> "))
+        out_file_name = fileHide(file_to_enc, f_to_enc_in)
+        
+        print("Do you wish to delete the original file? [y]es | [n]o")
+        del_choice = str(input("> "))
+        if del_choice == 'y':
+            print("Warning: File will be lost if encoding/decoding fails")
+            print("Do you wish to proceed? [y]es | [n]o")
+            confirm = str(input("> "))
+            if confirm == 'y':
+                import os
+                print(file_to_enc, " removed.")
+                os.remove(file_to_enc)
+                
+            else:
+                print("File not deleted")
+            
+        
+        print(out_file_name, " has been created")
+        
+    elif choice == 'f':
+        print("Enter filename of file to decode")
+        enc_file = str(input("> "))
+        filename = fileFind(enc_file)
+        print("Do you wish to delete the original file? [y]es | [n]o")
+        del_choice = str(input("> "))
+        if del_choice == 'y':
+            print("Warning: File will be lost if encoding/decoding fails")
+            print("Do you wish to proceed? [y]es | [n]o")
+            confirm = str(input("> "))
+            if confirm == 'y':
+                import os
+                print(enc_file, " removed.")
+                os.remove(enc_file)
+                
+            else:
+                print("File not deleted")
+            
+            
+        print(filename, " has been created")
+        
+    else:
+        print("f or h must be given")
+    return
+   
+#==============================================
+
+if __name__ == '__main__':
+    welcome()
+    
+    
+        
+        
 #==============================================
 # Scratchpad:
-  
+
+
 #   
-#   1b: Add F- to beginning of found filename
+#   1b: investigate os.path
 
 #   2: Option to delete Original File
 #        when encoding
