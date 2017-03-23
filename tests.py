@@ -6,7 +6,7 @@ Created on Thu Mar 23 11:40:16 2017
 @author: steve
 """
 
-from ImageEncrypt import testFunction
+from pyEncrypt import testFunction
 
 #=============================================
 
