@@ -4,6 +4,25 @@
 Created on Wed Mar 22 16:16:05 2017
 
 @author: steveJsmith1
+
+This function 'hides' one file inside another
+and is also able to 'find' it again.
+
+see tests.py to see what is currently working
+
+to hide a file:
+    
+    fileHide(
+            file to encode, 
+            file to use for encoding in, 
+            filename of encoded file)
+    
+to find a file hidden using the above function
+
+    fileFind(
+            filename of encoded file
+            desired filename of output
+            )
 """
 
 def readBytes(file):
@@ -19,6 +38,16 @@ def writeBytes(bytes_, file):
 
 
 def fileHide(file_to_enc, f_to_enc_in, output_file, filebytes=False):
+    """
+    to hide a file:
+    
+    fileHide(
+            file to encode, 
+            file to use for encoding in, 
+            filename of encoded file)
+    
+    filebytes=True called from testFunction
+    """
     # creating bytearrays
     file_to_enc_b = readBytes(file_to_enc)
     f_to_enc_in_b = readBytes(f_to_enc_in)
@@ -40,6 +69,16 @@ def fileHide(file_to_enc, f_to_enc_in, output_file, filebytes=False):
 
 
 def fileFind(enc_file, out_file, filebytes=False):
+    """
+    to find a file hidden using fileHide()
+
+    fileFind(
+            filename of encoded file
+            desired filename of output
+            )
+    
+    filebytes=True called from testFunction()
+    """
     # fetching bytes from encoded file
     enc_bytes = readBytes(enc_file)
     # extracting encded
