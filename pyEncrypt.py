@@ -213,6 +213,7 @@ def testFunction(in_file, enc_file):
 
 # User interface
 
+    
 
 def welcome():
     print('-'*40)
@@ -221,54 +222,65 @@ def welcome():
     print('Do you wish to [h]ide or [f]ind a file? ')
     choice = str(input('> '))
     if choice == 'h':
-        print("Enter filename to hide")
-        file_to_enc=str(input("> "))
-        print("Enter filename to hide the file in")
-        f_to_enc_in = str(input("> "))
-        out_file_name = fileHide(file_to_enc, f_to_enc_in)
-        
-        print("Do you wish to delete the original file? [y]es | [n]o")
-        del_choice = str(input("> "))
-        if del_choice == 'y':
-            print("Warning: File will be lost if encoding/decoding fails")
-            print("Do you wish to proceed? [y]es | [n]o")
-            confirm = str(input("> "))
-            if confirm == 'y':
-                import os
-                print(file_to_enc, " removed.")
-                os.remove(file_to_enc)
-                
-            else:
-                print("File not deleted")
-            
-        
-        print(out_file_name, " has been created")
+        hChoice()
         
     elif choice == 'f':
-        print("Enter filename of file to decode")
-        enc_file = str(input("> "))
-        filename = fileFind(enc_file)
-        print("Do you wish to delete the original file? [y]es | [n]o")
-        del_choice = str(input("> "))
-        if del_choice == 'y':
-            print("Warning: File will be lost if encoding/decoding fails")
-            print("Do you wish to proceed? [y]es | [n]o")
-            confirm = str(input("> "))
-            if confirm == 'y':
-                import os
-                print(enc_file, " removed.")
-                os.remove(enc_file)
-                
-            else:
-                print("File not deleted")
-            
-            
-        print(filename, " has been created")
+        dChoice()
         
     else:
         print("f or h must be given")
+    
     return
-   
+ 
+#===============================================
+
+# processing user input
+
+def hChoice():
+    print("Enter filename to hide")
+    file_to_enc=str(input("> "))
+    print("Enter filename to hide the file in")
+    f_to_enc_in = str(input("> "))
+    out_file_name = fileHide(file_to_enc, f_to_enc_in)
+    
+    print("Do you wish to delete the original file? [y]es | [n]o")
+    del_choice = str(input("> "))
+    if del_choice == 'y':
+        warning(file_to_enc)
+      
+    print(out_file_name, " has been created")
+    return
+
+
+def dChoice():
+    print("Enter filename of file to decode")
+    enc_file = str(input("> "))
+    filename = fileFind(enc_file)
+    print("Do you wish to delete the original file? [y]es | [n]o")
+    del_choice = str(input("> "))
+    if del_choice == 'y':
+        warning(enc_file)
+    
+    print(filename, " has been created")
+    return 
+    
+
+def warning(filename):
+    
+    print("Warning: File will be lost if encoding/decoding fails")
+    print("Do you wish to proceed? [y]es | [n]o")
+    confirm = str(input("> "))
+    if confirm == 'y':
+        import os
+        print(filename, " removed.")
+        os.remove(filename)
+        
+    else:
+        print("File not deleted")
+    
+    return
+    
+
 #==============================================
 
 if __name__ == '__main__':
