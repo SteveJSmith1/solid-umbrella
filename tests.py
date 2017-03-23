@@ -16,21 +16,21 @@ from pyEncrypt import testFunction
 
 def passingTests():
     # test 1 - jpg and mp3 
-    testFunction('test.jpg', 'test.mp3', 'out1.mp3', 'out1.jpg')
+    testFunction('test.jpg', 'test.mp3')
     # Test 2 -  jpg and wav
-    testFunction('test.jpg', 'test.wav', 'out2.wav', 'out2.jpg')
+    testFunction('test.jpg', 'test.wav')
     # test 3 - jpg and mp4
-    testFunction('test.jpg', 'test.mp4', 'out3.mp4', 'out3.jpg')
+    testFunction('test.jpg', 'test.mp4')
     # test 4 - txt to mp3
-    testFunction('test.txt', 'test.mp3', 'out4.mp3', 'out4.txt') 
+    testFunction('test.txt', 'test.mp3') 
     # test 5 -  doc to mp3
-    testFunction('test.doc', 'test.mp3', 'out5.mp3', 'out5.doc') 
+    testFunction('test.doc', 'test.mp3') 
     # test 7 - doc to mp4
-    testFunction('test.doc', 'test.mp4', 'out7.mp4', 'out7.doc') 
+    testFunction('test.doc', 'test.mp4') 
     # test 8 - pdf to mp4
-    testFunction('test.pdf', 'test.mp4', 'out8.mp4', 'out8.pdf') 
+    testFunction('test.pdf', 'test.mp4') 
     # test 9 - mp3 to mp4
-    testFunction('test.mp3', 'test.mp4', 'out9.mp4', 'out9.mp3') 
+    testFunction('test.mp3', 'test.mp4') 
     
     return
 
@@ -42,15 +42,31 @@ def failingTests():
     # due to the bytearray size check
     
     # test 6 - pdf to mp3
-    testFunction('test.pdf', 'test.mp3', 'out6.mp3', 'out6.pdf') 
+    testFunction('test.pdf', 'test.mp3') 
     # test 10 - mp4 to mp3
     testFunction('test.mp4', 'test.mp3', 'out10.mp3', 'out10.mp4')
     #===================================
     
     return
 
+def filenameTest():
+    
+    from pyEncrypt import filenameToBytes, bytesToFilename
+    
+    filename = "testing with_a_lengthy_string_of_many_characters_for_a_test_to_see_what_sort_of_size_the_bytearray_may_need_to_be_to_cover_strings_of_this_length.wav"
+    
+    
+    name_array = filenameToBytes(filename)
+    
+    dec_filename = bytesToFilename(name_array)
+    
+    if filename == dec_filename:
+        print("Extracted encoded filename successfully")
+        
+    return
 
-# passingTests()
+
+passingTests()
 
 """
 test.jpg  equals  out1.jpg True
@@ -70,16 +86,5 @@ test.mp3  equals  out9.mp3 True
     Suggest using a larger file;
         try a .wav, .mp4 instead of an .mp3 perhaps
 """
-from pyEncrypt import filenameToBytes, bytesToFilename
 
 
-filename = "testing with_a_lengthy_string_of_many_characters_for_a_test_to_see_what_sort_of_size_the_bytearray_may_need_to_be_to_cover_strings_of_this_length.wav"
-
-
-name_array = filenameToBytes(filename)
-
-dec_filename = bytesToFilename(name_array)
-
-if filename == dec_filename:
-    print("Extracted encoded filename successfully")
-    
