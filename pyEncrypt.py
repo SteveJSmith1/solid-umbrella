@@ -18,7 +18,7 @@ def writeBytes(bytes_, file):
 
 
 
-def fileHide(file_to_enc, f_to_enc_in, output_file):
+def fileHide(file_to_enc, f_to_enc_in, output_file, filebytes=False):
     # creating bytearrays
     file_to_enc_b = readBytes(file_to_enc)
     f_to_enc_in_b = readBytes(f_to_enc_in)
@@ -32,10 +32,14 @@ def fileHide(file_to_enc, f_to_enc_in, output_file):
     f_to_enc_in_b[halfway:halfway+len_f_t_e_b] = file_to_enc_b
     # writing output file
     writeBytes(f_to_enc_in_b, output_file)
-    return
+    
+    if filebytes==True:
+        return file_to_enc_b
+    else:
+        return
 
 
-def fileFind(enc_file, out_file):
+def fileFind(enc_file, out_file, filebytes=False):
     # fetching bytes from encoded file
     enc_bytes = readBytes(enc_file)
     # extracting encded
@@ -47,7 +51,10 @@ def fileFind(enc_file, out_file):
     out_file_bytes = enc_bytes[halfway:halfway + out_file_len]
     # write jpg
     writeBytes(out_file_bytes, out_file)
-    return
+    if filebytes==True:
+        return out_file_bytes
+    else:
+        return
 
 def testFunction(in_file, enc_file, out_enc, out_file):
     """
@@ -56,15 +63,14 @@ def testFunction(in_file, enc_file, out_enc, out_file):
     to encode. Used to ascertain if the
     output is usable
     """
-    fileHide(in_file, enc_file, out_enc)
-    fileFind(out_enc, out_file)
-    # add functionality to check if the
-    # found file is the same as the hidden file
+    in_bytes = fileHide(in_file, enc_file, out_enc, filebytes=True)
+    out_bytes = fileFind(out_enc, out_file, filebytes=True)
+    
+    print(in_file, ' equals ', out_file, in_bytes==out_bytes)
     return
  
  
-def checkEquality():
-    return
+
 
 #     2c: try and break it by encoding a video
 #         into an audio file
