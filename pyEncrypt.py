@@ -25,17 +25,11 @@ to find a file hidden using the above function
             )
 """
 
-def readBytes(file):
-    with open(file, 'rb') as f:
-        b = bytearray(f.read())
-    return b
-
-def writeBytes(bytes_, file):
-    with open(file, 'wb') as f:
-        f.write(bytes_)
-    return
 
 
+#=============================================
+
+# The main functions to call when running
 
 def fileHide(file_to_enc, f_to_enc_in, filebytes=False):
     """
@@ -77,27 +71,6 @@ def fileHide(file_to_enc, f_to_enc_in, filebytes=False):
     else:
         return
 
-def encodeBytes(file_to_enc, f_to_enc_in_b, file_to_enc_b):
-    # fetching the array containing the filename   
-    name_array = filenameToBytes(file_to_enc)
-    # overwriting bytes with filename
-    f_to_enc_in_b[2000:2350] = name_array
-    
-    
-    # getting the length of the bytes to hide
-    len_f_t_e_b = int(len(file_to_enc_b))
-    # turning this integer it a bytes object
-    # of length 10
-    len_f_as_bytes = len_f_t_e_b.to_bytes(10, byteorder='big')
-    # overwriting bytes with the bytes of length
-    f_to_enc_in_b[1000:1010] = len_f_as_bytes
-    # finding point in file to start 'hiding'
-    halfway = int(len(f_to_enc_in_b)/2)
-    # overwrite the bytes with the bytes to 'hide'
-    f_to_enc_in_b[halfway:halfway+len_f_t_e_b] = file_to_enc_b
-    return f_to_enc_in_b
-
-
 
 def fileFind(enc_file, filebytes=False):
     """
@@ -123,6 +96,32 @@ def fileFind(enc_file, filebytes=False):
     else:
         return
 
+#===============================================
+
+# Bytes processing functions
+
+
+def encodeBytes(file_to_enc, f_to_enc_in_b, file_to_enc_b):
+    # fetching the array containing the filename   
+    name_array = filenameToBytes(file_to_enc)
+    # overwriting bytes with filename
+    f_to_enc_in_b[2000:2350] = name_array
+    
+    
+    # getting the length of the bytes to hide
+    len_f_t_e_b = int(len(file_to_enc_b))
+    # turning this integer it a bytes object
+    # of length 10
+    len_f_as_bytes = len_f_t_e_b.to_bytes(10, byteorder='big')
+    # overwriting bytes with the bytes of length
+    f_to_enc_in_b[1000:1010] = len_f_as_bytes
+    # finding point in file to start 'hiding'
+    halfway = int(len(f_to_enc_in_b)/2)
+    # overwrite the bytes with the bytes to 'hide'
+    f_to_enc_in_b[halfway:halfway+len_f_t_e_b] = file_to_enc_b
+    return f_to_enc_in_b
+
+
 def decodeBytes(enc_bytes):
     # extracting encded
     # info about file length in bytes
@@ -138,7 +137,9 @@ def decodeBytes(enc_bytes):
     
     return out_file_bytes, filename
 
-  
+#============================================
+
+# pre-processing checks  
 
 def fileCheck(in_file_bytes, enc_file_bytes):
     """
@@ -151,7 +152,9 @@ def fileCheck(in_file_bytes, enc_file_bytes):
     else:
         return False
 
+#============================================
 
+# Filename Operations
 
 def filenameToBytes(filename):
     # setting up a fairly large bytearray
@@ -174,6 +177,24 @@ def bytesToFilename(name_array):
     filename = filename_bytes.decode()
     return filename
 
+#=============================================
+
+# Functions to read/write bytes
+
+
+def readBytes(file):
+    with open(file, 'rb') as f:
+        b = bytearray(f.read())
+    return b
+
+def writeBytes(bytes_, file):
+    with open(file, 'wb') as f:
+        f.write(bytes_)
+    return
+
+
+#===========================================
+# The testing function called from tests.py
 
 def testFunction(in_file, enc_file):
     """
