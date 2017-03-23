@@ -6,7 +6,7 @@ Created on Thu Mar 23 11:40:16 2017
 @author: steve
 """
 
-from pyEncryptTest import testFunction
+from pyEncrypt import testFunction
 
 #=============================================
 
@@ -50,7 +50,7 @@ def failingTests():
     return
 
 
-#passingTests()
+# passingTests()
 
 """
 test.jpg  equals  out1.jpg True
@@ -64,5 +64,19 @@ test.mp3  equals  out9.mp3 True
 """
 # failingTests()
 """
-ValueError: Size of file to encode in must be at least twice         the size of the file to hide
+
+    WARNING: Size of file to encode in is too 
+    small, file not hidden.
+    Suggest using a larger file;
+        try a .wav, .mp4 instead of an .mp3 perhaps
 """
+from pyEncrypt import filenameToBytes, bytesToFilename
+
+
+filename = "testing_with_a_lengthy_string_of_many_characters_for_a_test_to_see_what_sort_of_size_the_bytearray_may_need_to_be_to_cover_strings_of_this_length.wav"
+
+filename_bytes = filenameToBytes(filename)
+dec_filename = bytesToFilename(filename_bytes)
+if filename == dec_filename:
+    print("Extracted encoded filename successfully")
+    
