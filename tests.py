@@ -81,4 +81,16 @@ testFunction('test.mp3', 'test.mp4', 'out9.mp4', 'out9.mp3')
 # Notes:
     # large pause then artefacts, mp3 approx 0.1*mp4
 
-
+"""
+test.py output:
+    
+test.jpg  equals  out1.jpg True
+test.jpg  equals  out2.jpg True
+test.jpg  equals  out3.jpg True
+test.txt  equals  out4.txt True
+test.doc  equals  out5.doc True
+test.pdf  equals  out6.pdf False
+test.doc  equals  out4.doc True
+test.pdf  equals  out8.pdf True
+test.mp3  equals  out9.mp3 True
+"""
