@@ -51,6 +51,21 @@ def fileHide(file_to_enc, f_to_enc_in, output_file, filebytes=False):
     # creating bytearrays
     file_to_enc_b = readBytes(file_to_enc)
     f_to_enc_in_b = readBytes(f_to_enc_in)
+    
+    # check file to encode in is big enough
+    check = fileCheck(file_to_enc_b, f_to_enc_in_b)
+    
+    if check == False:
+        print("""
+    WARNING: Size of file to encode in is too 
+    small, file not hidden.
+    Suggest using a larger file;
+        try a .wav, .mp4 instead of an .mp3 perhaps""")
+        return
+          
+        
+    
+    
     # encoding file byte length info into   
     # file to encode in
     len_f_t_e_b = int(len(file_to_enc_b))
@@ -62,6 +77,8 @@ def fileHide(file_to_enc, f_to_enc_in, output_file, filebytes=False):
     # writing output file
     writeBytes(f_to_enc_in_b, output_file)
     
+    # returning bytes for equality check in
+    # testFunction()
     if filebytes==True:
         return file_to_enc_b
     else:
@@ -90,6 +107,8 @@ def fileFind(enc_file, out_file, filebytes=False):
     out_file_bytes = enc_bytes[halfway:halfway + out_file_len]
     # write jpg
     writeBytes(out_file_bytes, out_file)
+    #returning bytes for equality test in 
+    # testFunction()
     if filebytes==True:
         return out_file_bytes
     else:
@@ -108,14 +127,20 @@ def testFunction(in_file, enc_file, out_enc, out_file):
     print(in_file, ' equals ', out_file, in_bytes==out_bytes)
     return
  
- 
-
-
-#     2c: try and break it by encoding a video
-#         into an audio file
-
 #     3: write logical tests to ensure the length 
 #     of the image_bytes is less than the mp3_bytes
+
+def fileCheck(in_file_bytes, enc_file_bytes):
+    """
+    Check that the file to encode in is twice
+    the length of the file to hide
+    (this is arbirtary at the moment)
+    """
+    if len(enc_file_bytes) > (2*len(in_file_bytes)):
+        return True
+    else:
+        return False
+
      
 #     4: encode the filetype as bytes and insert
 #     into the audio file and append filetpye
