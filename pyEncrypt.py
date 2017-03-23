@@ -252,6 +252,7 @@ def hChoice():
     return
 
 
+
 def dChoice():
     print("Enter filename of file to decode")
     enc_file = str(input("> "))
@@ -296,8 +297,6 @@ if __name__ == '__main__':
 #   
 #   1b: investigate os.path
 
-#   2: Option to delete Original File
-#        when encoding
 
 #   2: 2b check if file already exists
 #       ask to overwrite if it does
