@@ -145,7 +145,15 @@ def fileCheck(in_file_bytes, enc_file_bytes):
 #     4: encode the filetype as bytes and insert
 #     into the audio file and append filetpye
 #     to output filename
-     
+ 
+def filenameToBytes(filename):
+    filename_bytes = str.encode(filename)
+    return filename_bytes
+
+def bytesToFilename(filename_bytes):
+    filename = filename_bytes.decode()
+    return filename
+ 
 #     5: look at embedding file over a many 
 #     different ranges
      
