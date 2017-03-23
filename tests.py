@@ -73,10 +73,13 @@ test.mp3  equals  out9.mp3 True
 from pyEncrypt import filenameToBytes, bytesToFilename
 
 
-filename = "testing_with_a_lengthy_string_of_many_characters_for_a_test_to_see_what_sort_of_size_the_bytearray_may_need_to_be_to_cover_strings_of_this_length.wav"
+filename = "testing with_a_lengthy_string_of_many_characters_for_a_test_to_see_what_sort_of_size_the_bytearray_may_need_to_be_to_cover_strings_of_this_length.wav"
 
-filename_bytes = filenameToBytes(filename)
-dec_filename = bytesToFilename(filename_bytes)
+
+name_array = filenameToBytes(filename)
+
+dec_filename = bytesToFilename(name_array)
+
 if filename == dec_filename:
     print("Extracted encoded filename successfully")
     

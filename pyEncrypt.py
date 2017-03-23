@@ -147,13 +147,24 @@ def fileCheck(in_file_bytes, enc_file_bytes):
 #     to output filename
  
 def filenameToBytes(filename):
-    filename_bytes = str.encode(filename)
-    return filename_bytes
-
-def bytesToFilename(filename_bytes):
+    # setting up a fairly large bytearray
+    # to contain the filename
+    name_array = bytearray(350)
+    # create a bytearray of the filename
+    filename_bytes = bytearray(filename, 'utf-8')
+    # inserting filename_bytes into the beginning
+    # of the name array
+    name_array[0:len(filename_bytes)] = filename_bytes
+    return name_array
+     
+def bytesToFilename(name_array):
+    # filename between beginning of array
+    # and first null byte
+    filename_bytes = name_array[0:name_array.find(0)]
     filename = filename_bytes.decode()
     return filename
- 
+
+
 #     5: look at embedding file over a many 
 #     different ranges
      
