@@ -3,25 +3,24 @@
 """
 Created on Wed Mar 22 16:16:05 2017
 
-@author: steveJsmith1
+@author: steveJSmith1
 
 This function 'hides' one file inside another
 and is also able to 'find' it again.
 
-see tests.py to see what is currently working
+V1.0
 
 to hide a file:
     
     fileHide(
             file to encode, 
             file to use for encoding in, 
-            filename of encoded file)
+            )
     
 to find a file hidden using the above function
 
     fileFind(
             filename of encoded file
-            desired filename of output
             )
 """
 
@@ -31,16 +30,15 @@ to find a file hidden using the above function
 
 # The main functions to call when running
 
-def fileHide(file_to_enc, f_to_enc_in, filebytes=False):
+def fileHide(file_to_enc, f_to_enc_in):
     """
     to hide a file:
     
     fileHide(
             file to encode, 
-            file to use for encoding in, 
-            filename of encoded file)
+            file to use for encoding in)
     
-    filebytes=True called from testFunction
+    
     """
     # creating bytearrays
     file_to_enc_b = readBytes(file_to_enc)
@@ -77,7 +75,7 @@ def fileHide(file_to_enc, f_to_enc_in, filebytes=False):
         return out_file_name
 
 
-def fileFind(enc_file, filebytes=False):
+def fileFind(enc_file):
     """
     to find a file hidden using fileHide()
 
@@ -96,12 +94,8 @@ def fileFind(enc_file, filebytes=False):
     filename = checkExists(filename)
     # write file
     writeBytes(out_file_bytes, filename)
-    #returning bytes for equality test in 
-    # testFunction()
-    if filebytes==True:
-        return out_file_bytes
-    else:
-        return filename
+   
+    return filename
 
 #===============================================
 
@@ -374,23 +368,12 @@ def warning(filename):
 #==============================================
 # Scratchpad:
 
-      
-#   1: Split encoded file into it's two parts
-#       when decoding
-     
-
-
-
-
 
 #   4:  look at using an encryption of the 
 #     image_bytes before inserting into the 
 #     mp3_bytes
 
-#   5:  Investigate why pdfs fail and 
-#        find an avenue to support them
-#        (it may just need a larger file)
-     
+    
 #===============================================           
 #==============================================
 
