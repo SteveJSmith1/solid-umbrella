@@ -108,6 +108,103 @@ def fileFind(enc_file, filebytes=False):
 # Bytes processing functions
 
 
+def splitBytes(file_to_encode_bytes):
+    b = file_to_encode_bytes
+    num_of_regions = len(b) % 10 
+    region_length = int(len(b)/num_of_regions)
+    split_bytes = [b[i*region_length:(i+1)*region_length] for i in range(num_of_regions - 1)]
+    split_bytes.append(b[(num_of_regions - 1)*region_length:len(b)])
+    
+    
+    return split_bytes
+
+
+def splitBytesInfo(split_bytes):
+    length_of_list = len(split_bytes)
+    len_list_as_bytes = length_of_list.to_bytes(10, byteorder='big')
+    
+    len_elements = (len(split_bytes[0])).to_bytes(10, byteorder='big')
+    
+    len_last_element = (len(split_bytes[-1])).to_bytes(10, byteorder='big')
+    
+    return len_list_as_bytes, len_elements, len_last_element
+
+
+def byteArrayInfo(split_bytes, f_to_enc_in_b):
+    start = 5000
+    end = int(len(f_to_enc_in_b)-5000)
+    len_split = int((end - start) / len(split_bytes))
+    len_split_bytes = len_split.to_bytes(10, byteorder='big')
+    return len_split, len_split_bytes
+
+
+def fetchInfo(enc_bytes):
+    
+    # extracting encoded filename
+    name_array = enc_bytes[2000:2350]
+    # converting bytes to string of filename
+    filename = 'D-' + bytesToFilename(name_array)
+    
+    # extracting number of encoding regions
+    number_of_regions = int.from_bytes(enc_bytes[4000:4010], byteorder='big')
+    # fetching length of elements
+    elem_len = int.from_bytes(enc_bytes[4100:4110], byteorder='big')
+    # fetching the length of last element
+    last_elem_len = int.from_bytes(enc_bytes[4200:4210], byteorder='big')
+    # fetching the length of each split region
+    region_len = int.from_bytes(enc_bytes[4300:4310], byteorder='big')
+    
+    return filename, number_of_regions, elem_len, last_elem_len, region_len
+    
+
+#===========================================
+# Encoding/Decoding functions
+
+def encodeBytes(file_to_enc, f_to_enc_in_b, file_to_enc_b):
+    
+    split_bytes = splitBytes(file_to_enc_b)
+    
+    
+    # fetching the array containing the filename   
+    name_array = filenameToBytes(file_to_enc)
+    # overwriting bytes with filename
+    f_to_enc_in_b[2000:2350] = name_array
+    # fetching split_bytes information as bytes
+    llab, le, lle = splitBytesInfo(split_bytes)
+    # encoding length of list
+    f_to_enc_in_b[4000:4010] = llab
+    # emcding the length of an element
+    f_to_enc_in_b[4100:4110] = le
+    # encoding the length of last element
+    f_to_enc_in_b[4200:4210] = lle
+                 
+    
+    # find length of bytes allocated for each
+    # bytearray in the list
+    ls, lsb = byteArrayInfo(split_bytes, f_to_enc_in_b)
+    f_to_enc_in_b[4300:4310] = lsb
+                 
+    # encoding each bytearray element 
+    for i in range(len(split_bytes)):
+        f_to_enc_in_b[5000+i*ls:5000+i*ls+len(split_bytes[i])] = split_bytes[i]
+                
+    return f_to_enc_in_b
+
+
+def decodeBytes(enc_bytes):
+    
+    filename, nor, el, lel, rl = fetchInfo(enc_bytes)
+    
+    #fetching data
+    orig = []
+    for i in range(nor - 1):
+        orig.append(enc_bytes[5000+i*rl:5000+i*rl+el])
+    #last one
+    orig.append(enc_bytes[5000+(nor-1)*rl:5000+(nor-1)*rl+lel])
+        
+    out_file_bytes = bytearray(b''.join(orig))
+    return out_file_bytes, filename
+
 
 #============================================
 
@@ -278,105 +375,10 @@ def warning(filename):
 # Scratchpad:
 
       
-#   3: look at embedding file over a many 
-#     different ranges
+#   1: Split encoded file into it's two parts
+#       when decoding
      
 
-def splitBytes(file_to_encode_bytes):
-    b = file_to_encode_bytes
-    num_of_regions = len(b) % 10 
-    region_length = int(len(b)/num_of_regions)
-    split_bytes = [b[i*region_length:(i+1)*region_length] for i in range(num_of_regions - 1)]
-    split_bytes.append(b[(num_of_regions - 1)*region_length:len(b)])
-    
-    
-    return split_bytes
-
-
-def splitBytesInfo(split_bytes):
-    length_of_list = len(split_bytes)
-    len_list_as_bytes = length_of_list.to_bytes(10, byteorder='big')
-    
-    len_elements = (len(split_bytes[0])).to_bytes(10, byteorder='big')
-    
-    len_last_element = (len(split_bytes[-1])).to_bytes(10, byteorder='big')
-    
-    return len_list_as_bytes, len_elements, len_last_element
-
-def byteArrayInfo(split_bytes, f_to_enc_in_b):
-    start = 5000
-    end = int(len(f_to_enc_in_b)-5000)
-    len_split = int((end - start) / len(split_bytes))
-    len_split_bytes = len_split.to_bytes(10, byteorder='big')
-    return len_split, len_split_bytes
-
-
-def encodeBytes(file_to_enc, f_to_enc_in_b, file_to_enc_b):
-    
-    split_bytes = splitBytes(file_to_enc_b)
-    
-    
-    # fetching the array containing the filename   
-    name_array = filenameToBytes(file_to_enc)
-    # overwriting bytes with filename
-    f_to_enc_in_b[2000:2350] = name_array
-    # fetching split_bytes information as bytes
-    llab, le, lle = splitBytesInfo(split_bytes)
-    # encoding length of list
-    f_to_enc_in_b[4000:4010] = llab
-    # emcding the length of an element
-    f_to_enc_in_b[4100:4110] = le
-    # encoding the length of last element
-    f_to_enc_in_b[4200:4210] = lle
-                 
-    
-    # find length of bytes allocated for each
-    # bytearray in the list
-    ls, lsb = byteArrayInfo(split_bytes, f_to_enc_in_b)
-    f_to_enc_in_b[4300:4310] = lsb
-                 
-    # encoding each bytearray element 
-    for i in range(len(split_bytes)):
-        f_to_enc_in_b[5000+i*ls:5000+i*ls+len(split_bytes[i])] = split_bytes[i]
-                
-    return f_to_enc_in_b
-
-
-# fetching data
-
-# fetching number of regions
-
-def fetchInfo(enc_bytes):
-    
-    # extracting encoded filename
-    name_array = enc_bytes[2000:2350]
-    # converting bytes to string of filename
-    filename = 'F-' + bytesToFilename(name_array)
-    
-    # extracting number of encoding regions
-    number_of_regions = int.from_bytes(enc_bytes[4000:4010], byteorder='big')
-    # fetching length of elements
-    elem_len = int.from_bytes(enc_bytes[4100:4110], byteorder='big')
-    # fetching the length of last element
-    last_elem_len = int.from_bytes(enc_bytes[4200:4210], byteorder='big')
-    # fetching the length of each split region
-    region_len = int.from_bytes(enc_bytes[4300:4310], byteorder='big')
-    
-    return filename, number_of_regions, elem_len, last_elem_len, region_len
-    
-def decodeBytes(enc_bytes):
-    
-    filename, nor, el, lel, rl = fetchInfo(enc_bytes)
-    
-    #fetching data
-    orig = []
-    for i in range(nor - 1):
-        orig.append(enc_bytes[5000+i*rl:5000+i*rl+el])
-    #last one
-    orig.append(enc_bytes[5000+(nor-1)*rl:5000+(nor-1)*rl+lel])
-        
-    out_file_bytes = bytearray(b''.join(orig))
-    return out_file_bytes, filename
 
 
 
