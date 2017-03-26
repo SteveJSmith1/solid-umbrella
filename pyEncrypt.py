@@ -318,11 +318,6 @@ if __name__ == '__main__':
 # Scratchpad:
 
 
-
-#   2: When encoded, extract, run a test
-#   : if file is okay, delete original file
-#   : if not raise an error
-
        
 #   3: look at embedding file over a many 
 #     different ranges
