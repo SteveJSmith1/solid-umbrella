@@ -62,13 +62,15 @@ def fileHide(file_to_enc, f_to_enc_in):
     out_file_name = 'H-' + f_to_enc_in
     # check if file already exists
     out_file_name = checkExists(out_file_name)
+    # write bytes to file
     writeBytes(encoded_bytes, out_file_name)
     
+    # decodes to ascertain whether the files match
     enc_check = encodeCheck(file_to_enc_b, out_file_name)
     # returning bytes for equality check in
     # testFunction()
     if enc_check==True:
-        print("Encoding check: pass")
+        print("Encoding check: Pass")
         return out_file_name
     else:
         print("Encoding check: Fail")
@@ -103,10 +105,15 @@ def fileFind(enc_file):
 
 
 def splitBytes(file_to_encode_bytes):
+    
     b = file_to_encode_bytes
-    num_of_regions = len(b) % 10 
+    # determine number of regions to split into
+    num_of_regions = len(b) % 10
+    # determine the length of the bytes needed
     region_length = int(len(b)/num_of_regions)
+    # write list elements in bytes
     split_bytes = [b[i*region_length:(i+1)*region_length] for i in range(num_of_regions - 1)]
+    # passing the last element (not fixed size)
     split_bytes.append(b[(num_of_regions - 1)*region_length:len(b)])
     
     
@@ -114,6 +121,8 @@ def splitBytes(file_to_encode_bytes):
 
 
 def splitBytesInfo(split_bytes):
+    # information needed when decoding
+    # converting this info to bytes
     length_of_list = len(split_bytes)
     len_list_as_bytes = length_of_list.to_bytes(10, byteorder='big')
     
@@ -125,9 +134,13 @@ def splitBytesInfo(split_bytes):
 
 
 def byteArrayInfo(split_bytes, f_to_enc_in_b):
+    # determine where to start and finish decoding
     start = 5000
     end = int(len(f_to_enc_in_b)-5000)
+    # finding the size in bytes allocated 
+    # to the split bytes
     len_split = int((end - start) / len(split_bytes))
+    # encoding as bytes
     len_split_bytes = len_split.to_bytes(10, byteorder='big')
     return len_split, len_split_bytes
 
@@ -187,6 +200,7 @@ def encodeBytes(file_to_enc, f_to_enc_in_b, file_to_enc_b):
 
 def decodeBytes(enc_bytes):
     
+    # fetching encoded information
     filename, nor, el, lel, rl = fetchInfo(enc_bytes)
     
     #fetching data
@@ -195,7 +209,8 @@ def decodeBytes(enc_bytes):
         orig.append(enc_bytes[5000+i*rl:5000+i*rl+el])
     #last one
     orig.append(enc_bytes[5000+(nor-1)*rl:5000+(nor-1)*rl+lel])
-        
+    
+    # writing to bytes
     out_file_bytes = bytearray(b''.join(orig))
     return out_file_bytes, filename
 
@@ -219,7 +234,8 @@ def fileCheck(in_file_bytes, enc_file_bytes):
 # Post-processiong checks
 
 def encodeCheck(in_bytes, encoded_file):
-    
+    # reads the encoded file and checks equality
+    # with the file to encode
     read_bytes = readBytes(encoded_file)
     bytes_to_check, _ = decodeBytes(read_bytes)
     if in_bytes == bytes_to_check:
@@ -255,9 +271,10 @@ def bytesToFilename(name_array):
 
 def checkExists(filename):
     import os
-    
+    import time
     if os.path.isfile(filename):
         print(filename, " already exists, overwrite? [y]es, [n]o")
+        time.sleep(0.1)
         overwrite = input(str("> "))
         if overwrite == 'y':
             os.remove(filename)
