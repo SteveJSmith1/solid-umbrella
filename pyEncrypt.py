@@ -66,11 +66,14 @@ def fileHide(file_to_enc, f_to_enc_in, filebytes=False):
     out_file_name = checkExists(out_file_name)
     writeBytes(encoded_bytes, out_file_name)
     
+    enc_check = encodeCheck(file_to_enc_b, out_file_name)
     # returning bytes for equality check in
     # testFunction()
-    if filebytes==True:
-        return file_to_enc_b, out_file_name
+    if enc_check==True:
+        print("Encoding check: pass")
+        return out_file_name
     else:
+        print("Encoding check: Fail")
         return out_file_name
 
 
@@ -157,6 +160,18 @@ def fileCheck(in_file_bytes, enc_file_bytes):
         return False
 
 #============================================
+# Post-processiong checks
+
+def encodeCheck(in_bytes, encoded_file):
+    
+    read_bytes = readBytes(encoded_file)
+    bytes_to_check, _ = decodeBytes(read_bytes)
+    if in_bytes == bytes_to_check:
+        return True
+    else:
+        return False
+    
+#============================================
 
 # Filename Operations
 
@@ -214,20 +229,6 @@ def writeBytes(bytes_, file):
 
 
 #===========================================
-# The testing function called from tests.py
-
-def testFunction(in_file, enc_file):
-    """
-    This function performs a test operation
-    by first Hiding then Finding the file
-    to encode. Used to ascertain if the
-    output is usable
-    """
-    in_bytes, out_file_name = fileHide(in_file, enc_file, filebytes=True)
-    out_bytes = fileFind(out_file_name, filebytes=True)
-    
-    print('Files are equal ', in_bytes==out_bytes)
-    return
 
 #=========================================
 
@@ -236,10 +237,12 @@ def testFunction(in_file, enc_file):
     
 
 def welcome():
+    import time
     print('-'*40)
     print('Welcome to pyEncrypt')
     print('-'*40)
     print('Do you wish to [h]ide or [f]ind a file? ')
+    time.sleep(0.1)
     choice = str(input('> '))
     if choice == 'h':
         hChoice()
@@ -315,18 +318,12 @@ if __name__ == '__main__':
 # Scratchpad:
 
 
-#   
-#   1: integrate checkExists 
-
-
 
 #   2: When encoded, extract, run a test
 #   : if file is okay, delete original file
 #   : if not raise an error
 
-
-
-        
+       
 #   3: look at embedding file over a many 
 #     different ranges
      
