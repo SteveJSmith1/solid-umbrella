@@ -60,8 +60,10 @@ def fileHide(file_to_enc, f_to_enc_in, filebytes=False):
     # processing the bytes
     encoded_bytes = encodeBytes(file_to_enc, f_to_enc_in_b, file_to_enc_b)    
     
-    # writing output file
+    # naming output file
     out_file_name = 'H-' + f_to_enc_in
+    # check if file already exists
+    out_file_name = checkExists(out_file_name)
     writeBytes(encoded_bytes, out_file_name)
     
     # returning bytes for equality check in
@@ -87,6 +89,8 @@ def fileFind(enc_file, filebytes=False):
     enc_bytes = readBytes(enc_file)
     # fetching information from encoded bytes
     out_file_bytes, filename = decodeBytes(enc_bytes)
+    # check if file exists
+    filename = checkExists(filename)
     # write file
     writeBytes(out_file_bytes, filename)
     #returning bytes for equality test in 
@@ -177,6 +181,22 @@ def bytesToFilename(name_array):
     filename = filename_bytes.decode()
     return filename
 
+
+def checkExists(filename):
+    import os
+    
+    if os.path.isfile(filename):
+        print(filename, " already exists, overwrite? [y]es, [n]o")
+        overwrite = input(str("> "))
+        if overwrite == 'y':
+            os.remove(filename)
+            print(filename, " deleted")
+        else:
+            print("Enter a filename to save as: ")
+            filename = str(input("> "))
+    return filename
+
+
 #=============================================
 
 # Functions to read/write bytes
@@ -243,6 +263,7 @@ def hChoice():
     f_to_enc_in = str(input("> "))
     out_file_name = fileHide(file_to_enc, f_to_enc_in)
     
+    
     print("Do you wish to delete the original file? [y]es | [n]o")
     del_choice = str(input("> "))
     if del_choice == 'y':
@@ -295,13 +316,17 @@ if __name__ == '__main__':
 
 
 #   
-#   1b: investigate os.path
+#   1: integrate checkExists 
 
 
-#   2: 2b check if file already exists
-#       ask to overwrite if it does
-#       ask to specify filename if not
 
+#   2: When encoded, extract, run a test
+#   : if file is okay, delete original file
+#   : if not raise an error
+
+
+
+        
 #   3: look at embedding file over a many 
 #     different ranges
      
@@ -314,3 +339,4 @@ if __name__ == '__main__':
 #        (it may just need a larger file)
      
 #===============================================           
+
