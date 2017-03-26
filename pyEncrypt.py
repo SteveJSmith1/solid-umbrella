@@ -346,9 +346,7 @@ def encodeBytes(file_to_enc, f_to_enc_in_b, file_to_enc_b):
 
 # fetching number of regions
 
-
-def decodeBytes(enc_bytes):
-    
+def fetchInfo(enc_bytes):
     
     # extracting encoded filename
     name_array = enc_bytes[2000:2350]
@@ -364,16 +362,21 @@ def decodeBytes(enc_bytes):
     # fetching the length of each split region
     region_len = int.from_bytes(enc_bytes[4300:4310], byteorder='big')
     
+    return filename, number_of_regions, elem_len, last_elem_len, region_len
+    
+def decodeBytes(enc_bytes):
+    
+    filename, nor, el, lel, rl = fetchInfo(enc_bytes)
+    
     #fetching data
     orig = []
-    for i in range(number_of_regions - 1):
-        orig.append(enc_bytes[5000+i*region_len:5000+i*region_len+elem_len])
+    for i in range(nor - 1):
+        orig.append(enc_bytes[5000+i*rl:5000+i*rl+el])
     #last one
-    orig.append(enc_bytes[5000+(number_of_regions-1)*region_len:5000+(number_of_regions-1)*region_len+last_elem_len])
+    orig.append(enc_bytes[5000+(nor-1)*rl:5000+(nor-1)*rl+lel])
         
     out_file_bytes = bytearray(b''.join(orig))
     return out_file_bytes, filename
-
 
 
 
