@@ -12,7 +12,7 @@ into a .wav.
 
 #### Usage: 
 
-run **python encrypt.py** to start the user interface
+run **python pyEncrypt.py** to start the user interface
 or import the following functions.
 
 **from pyEncrypt import fileHide, fileFind**
